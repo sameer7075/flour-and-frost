@@ -11,12 +11,12 @@ const areas = [
   ["dha", "DHA"],
 ];
 
-export default function CartPage({ items, cart, fulfillment, onChangeQuantity, onRemove, onSetFulfillment }) {
+export default function CartPage({ items, cart, method, area, onMethodChange, onAreaChange, onChangeQuantity, onRemove }) {
   const cartItems = cart.map((entry) => ({ ...entry, item: items.find((item) => item.id === entry.id) })).filter((entry) => entry.item);
   const subtotal = cartItems.reduce((sum, entry) => sum + entry.item.price * entry.quantity, 0);
   const incompatibilities = cartItems.map((entry) => ({
     id: entry.id,
-    result: checkItemForArea(entry.item, fulfillment.method, fulfillment.area),
+    result: checkItemForArea(entry.item, method, area),
   }));
   const hasConflict = incompatibilities.some((entry) => !entry.result.ok);
 
@@ -28,10 +28,6 @@ export default function CartPage({ items, cart, fulfillment, onChangeQuantity, o
         <Link className="btn btn-primary" to="/">Browse the menu</Link>
       </section>
     );
-  }
-
-  function setMethod(method) {
-    onSetFulfillment({ method, area: method === "pickup" ? fulfillment.area : fulfillment.area });
   }
 
   return (
@@ -49,25 +45,25 @@ export default function CartPage({ items, cart, fulfillment, onChangeQuantity, o
           <h2>Fulfilment</h2>
           <fieldset>
             <legend>How will you receive it?</legend>
-            <label><input type="radio" name="method" checked={fulfillment.method === "pickup"} onChange={() => setMethod("pickup")} /> Pickup from Satellite Town (free)</label>
-            <label><input type="radio" name="method" checked={fulfillment.method === "delivery"} onChange={() => setMethod("delivery")} /> Delivery</label>
+            <label><input type="radio" name="method" checked={method === "pickup"} onChange={() => onMethodChange("pickup")} /> Pickup from Satellite Town (free)</label>
+            <label><input type="radio" name="method" checked={method === "delivery"} onChange={() => onMethodChange("delivery")} /> Delivery</label>
           </fieldset>
-          {fulfillment.method === "delivery" && (
+          {method === "delivery" && (
             <div className="field">
               <label htmlFor="area">Delivery area</label>
-              <select id="area" value={fulfillment.area} onChange={(event) => onSetFulfillment({ area: event.target.value })}>
+              <select id="area" value={area} onChange={(event) => onAreaChange(event.target.value)}>
                 <option value="">Choose an area</option>
                 {areas.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
               </select>
             </div>
           )}
-          {hasConflict && fulfillment.method === "delivery" && (
+          {hasConflict && method === "delivery" && (
             <p className="status status-bad">Ice-Cream Cake is restricted to Satellite Town or Saddar. Switch to pickup or remove it.</p>
           )}
           <p className="muted">Items: {cartItems.length} · Subtotal: {formatPrice(subtotal)}</p>
           <Link className="btn btn-primary" to="/checkout">Continue to checkout</Link>
         </div>
-        <OrderSummary subtotal={subtotal} method={fulfillment.method} area={fulfillment.area} />
+        <OrderSummary subtotal={subtotal} method={method} area={area} />
       </div>
     </section>
   );

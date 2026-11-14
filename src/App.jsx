@@ -7,27 +7,43 @@ import CartPage from "./pages/CartPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 import ConfirmationPage from "./pages/ConfirmationPage.jsx";
 import { checkQuantity } from "./rules/quantityRules.js";
+import { DELIVERY_FEES } from "./rules/pricingRules.js";
+
+const STORAGE_KEY = "flour-frost-cart";
+const DEFAULT_METHOD = "pickup";
+const DEFAULT_AREA = "satellite-town";
+
+function readSavedOrder() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null");
+    const storedCart = Array.isArray(saved) ? saved : saved?.cart;
+    const method = saved?.method === "delivery" || saved?.method === "pickup" ? saved.method : DEFAULT_METHOD;
+    const area = Object.hasOwn(DELIVERY_FEES, saved?.area) ? saved.area : DEFAULT_AREA;
+    return {
+      cart: Array.isArray(storedCart) ? storedCart : [],
+      method,
+      area,
+    };
+  } catch (error) {
+    console.warn("Could not restore the saved order.", error);
+    return { cart: [], method: DEFAULT_METHOD, area: DEFAULT_AREA };
+  }
+}
 
 export default function App() {
   const [items, setItems] = useState([]);
   const [status, setStatus] = useState("loading");
   const [attempt, setAttempt] = useState(0);
   const [simulateFailure, setSimulateFailure] = useState(false);
-  const [cart, setCart] = useState(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem("flour-frost-cart") ?? "[]");
-      return Array.isArray(saved) ? saved : [];
-    } catch (error) {
-      console.warn("Could not restore the saved cart.", error);
-      return [];
-    }
-  });
-  const [fulfillment, setFulfillment] = useState({ method: "pickup", area: "" });
+  const [savedOrder] = useState(readSavedOrder);
+  const [cart, setCart] = useState(savedOrder.cart);
+  const [method, setMethod] = useState(savedOrder.method);
+  const [area, setArea] = useState(savedOrder.area);
   const [lastOrder, setLastOrder] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem("flour-frost-cart", JSON.stringify(cart));
-  }, [cart]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart, method, area }));
+  }, [cart, method, area]);
 
   function addToCart(item, requestedQuantity = 1) {
     const quantity = checkQuantity(requestedQuantity, item.stock);
@@ -52,10 +68,6 @@ export default function App() {
 
   function removeItem(id) {
     setCart((previous) => previous.filter((entry) => entry.id !== id));
-  }
-
-  function updateFulfillment(next) {
-    setFulfillment((previous) => ({ ...previous, ...next }));
   }
 
   // Load the data from the mock server. Re-runs on retry or when the demo switch changes.
@@ -120,8 +132,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<MenuPage items={items} onAddToCart={addToCart} />} />
             <Route path="/items/:id" element={<ItemPage items={items} onAddToCart={addToCart} />} />
-            <Route path="/cart" element={<CartPage items={items} cart={cart} fulfillment={fulfillment} onChangeQuantity={changeQuantity} onRemove={removeItem} onSetFulfillment={updateFulfillment} />} />
-            <Route path="/checkout" element={<CheckoutPage items={items} cart={cart} fulfillment={fulfillment} onPlaceOrder={(order) => { setLastOrder(order); setCart([]); }} />} />
+            <Route path="/cart" element={<CartPage items={items} cart={cart} method={method} area={area} onMethodChange={setMethod} onAreaChange={setArea} onChangeQuantity={changeQuantity} onRemove={removeItem} />} />
+            <Route path="/checkout" element={<CheckoutPage items={items} cart={cart} method={method} area={area} onPlaceOrder={(order) => { setLastOrder(order); setCart([]); }} />} />
             <Route path="/confirmation" element={<ConfirmationPage order={lastOrder} />} />
             <Route
               path="*"
