@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { formatPrice, stockLabel } from "../utils/browse.js";
+import { checkQuantity } from "../rules/quantityRules.js";
 
 const AREA_NAMES = {
   "satellite-town": "Satellite Town",
@@ -8,7 +9,7 @@ const AREA_NAMES = {
   dha: "DHA",
 };
 
-export default function ItemPage({ items }) {
+export default function ItemPage({ items, onAddToCart }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,6 +49,11 @@ export default function ItemPage({ items }) {
       <p className="price">{formatPrice(item.price)}</p>
       <p>{item.description}</p>
       <p className={soldOut ? "status status-bad" : "status status-ok"}>{stockLabel(item.stock)}</p>
+      <p className="muted">Maximum {Math.min(6, item.stock)} per order.</p>
+      <button type="button" className="btn btn-primary" onClick={() => onAddToCart(item)} disabled={soldOut}>
+        {soldOut ? "Unavailable" : "Add 1 to cart"}
+      </button>
+      {item.stock > 0 && <p className="muted">You can add up to {checkQuantity(6, item.stock).max} of this item.</p>}
 
       <h2>Delivery</h2>
       {item.deliveryAreas ? (

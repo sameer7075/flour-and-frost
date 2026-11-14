@@ -1,16 +1,41 @@
-# React + Vite
+# Flour & Frost
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Flour & Frost is a fictional bakery for university students and families in
+Rawalpindi and Islamabad. Customers can browse 12 products, search and filter
+the menu, build a mixed cart, choose pickup or delivery, review the complete
+price, and place a simulated order.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Checks used before submission:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm run lint
+npm test
+npm run build
+```
 
-## Expanding the ESLint configuration
+## Business rules
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Each item allows 1 to 6 units, capped by today's stock. Sold-out items
+  cannot be added.
+- Ice-Cream Cake delivery is limited to Satellite Town and Saddar. Pickup is
+  always available.
+- Delivery requires a Rs. 1,500 subtotal, costs Rs. 200 in Satellite Town or
+  Saddar and Rs. 350 in Bahria Town or DHA, and is free at Rs. 4,000 or more.
+
+Orders are simulated. No real payment or personal data processing occurs.
+The cart is saved in browser local storage so a refresh keeps the selection.
+
+## Main routes
+
+- `/` menu search, filtering, sorting, and product cards
+- `/items/:id` product details
+- `/cart` selection and fulfilment choices
+- `/checkout` validated order form and final price
+- `/confirmation` simulated order result

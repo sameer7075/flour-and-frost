@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { formatPrice, stockLabel } from "../utils/browse.js";
 
-export default function ItemCard({ item }) {
+export default function ItemCard({ item, onAddToCart }) {
   const soldOut = item.stock === 0;
 
   return (
@@ -20,6 +20,9 @@ export default function ItemCard({ item }) {
       <p className="muted">{item.category}</p>
       <p className="price">{formatPrice(item.price)}</p>
       <p className={soldOut ? "status status-bad" : "status status-ok"}>{stockLabel(item.stock)}</p>
+      <button type="button" className="btn btn-primary" onClick={() => onAddToCart(item)} disabled={soldOut}>
+        {soldOut ? "Unavailable" : "Add to cart"}
+      </button>
     </li>
   );
 }

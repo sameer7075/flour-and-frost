@@ -3,7 +3,7 @@ import ItemCard from "../components/ItemCard.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import { filterAndSort, getCategories } from "../utils/browse.js";
 
-export default function MenuPage({ items }) {
+export default function MenuPage({ items, onAddToCart }) {
   // Search, filter and sort live in the URL, so Back from an item page keeps them.
   const [params, setParams] = useSearchParams();
   const query = params.get("q") ?? "";
@@ -32,6 +32,7 @@ export default function MenuPage({ items }) {
   return (
     <section>
       <h1>Our menu</h1>
+      <p className="notice">Delivery is Rs. 200 in Satellite Town/Saddar or Rs. 350 in Bahria Town/DHA. Delivery needs a Rs. 1,500 subtotal and is free from Rs. 4,000. Pickup has no minimum.</p>
 
       <div className="controls">
         <div className="field">
@@ -81,7 +82,7 @@ export default function MenuPage({ items }) {
           </p>
           <ul className="grid">
             {results.map((item) => (
-              <ItemCard key={item.id} item={item} />
+              <ItemCard key={item.id} item={item} onAddToCart={onAddToCart} />
             ))}
           </ul>
         </>

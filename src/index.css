@@ -114,7 +114,9 @@ a {
   font-size: 0.9rem;
 }
 input[type="search"],
-select {
+select,
+input,
+textarea {
   font: inherit;
   padding: 0.6rem;
   min-height: 44px;
@@ -122,6 +124,113 @@ select {
   border-radius: 6px;
   background: var(--surface);
   max-width: 100%;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 1rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.notice {
+  background: #fff0d9;
+  border: 1px solid #e8c58b;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.cart-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.cart-item h3 {
+  margin: 0;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.quantity-controls .btn {
+  min-width: 44px;
+  justify-content: center;
+  padding-inline: 0.5rem;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.summary {
+  position: sticky;
+  top: 1rem;
+}
+
+.summary dl {
+  margin: 0;
+}
+
+.summary dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0;
+}
+
+.summary dd {
+  margin: 0;
+}
+
+.summary-total {
+  border-top: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.form-stack {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.form-stack h2 {
+  margin: 0;
+}
+
+.field-error {
+  color: var(--bad);
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.confirmation {
+  max-width: 680px;
 }
 
 .grid {
@@ -219,4 +328,32 @@ select {
   list-style: none;
   padding: 0;
   margin: 0 0 1rem;
+}
+
+@media (max-width: 650px) {
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .cart-item {
+    grid-template-columns: 1fr auto;
+  }
+
+  .cart-item > strong {
+    grid-column: 1;
+  }
+
+  .cart-item > .btn:last-child {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .summary {
+    position: static;
+  }
 }
