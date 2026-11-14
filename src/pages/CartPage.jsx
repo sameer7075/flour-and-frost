@@ -3,6 +3,7 @@ import CartItem from "../components/CartItem.jsx";
 import OrderSummary from "../components/OrderSummary.jsx";
 import { checkItemForArea } from "../rules/areaRules.js";
 import { formatPrice } from "../utils/browse.js";
+import CartNotice from "../components/CartNotice.jsx";
 
 const areas = [
   ["satellite-town", "Satellite Town"],
@@ -11,7 +12,7 @@ const areas = [
   ["dha", "DHA"],
 ];
 
-export default function CartPage({ items, cart, method, area, onMethodChange, onAreaChange, onChangeQuantity, onRemove }) {
+export default function CartPage({ items, cart, method, area, messages, onDismissMessages, onMethodChange, onAreaChange, onChangeQuantity, onRemove }) {
   const cartItems = cart.map((entry) => ({ ...entry, item: items.find((item) => item.id === entry.id) })).filter((entry) => entry.item);
   const subtotal = cartItems.reduce((sum, entry) => sum + entry.item.price * entry.quantity, 0);
   const incompatibilities = cartItems.map((entry) => ({
@@ -23,6 +24,7 @@ export default function CartPage({ items, cart, method, area, onMethodChange, on
   if (cartItems.length === 0) {
     return (
       <section className="empty">
+        <CartNotice messages={messages} onDismiss={onDismissMessages} />
         <h1>Your cart is empty</h1>
         <p>Choose something from the menu to start a mixed order.</p>
         <Link className="btn btn-primary" to="/">Browse the menu</Link>
@@ -33,6 +35,7 @@ export default function CartPage({ items, cart, method, area, onMethodChange, on
   return (
     <section>
       <h1>Your cart</h1>
+      <CartNotice messages={messages} onDismiss={onDismissMessages} />
       <p className="notice">Delivery is Rs. 200 in Satellite Town/Saddar or Rs. 350 in Bahria Town/DHA. Delivery needs a Rs. 1,500 subtotal and is free from Rs. 4,000.</p>
       <ul className="cart-list">
         {cartItems.map((entry) => {

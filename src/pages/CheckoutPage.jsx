@@ -4,8 +4,9 @@ import OrderSummary from "../components/OrderSummary.jsx";
 import { checkItemForArea } from "../rules/areaRules.js";
 import { checkQuantity } from "../rules/quantityRules.js";
 import { evaluateOrder } from "../rules/pricingRules.js";
+import CartNotice from "../components/CartNotice.jsx";
 
-export default function CheckoutPage({ items, cart, method, area, onPlaceOrder }) {
+export default function CheckoutPage({ items, cart, method, area, messages, onDismissMessages, onPlaceOrder }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", phone: "", address: "", payment: "cash", notes: "" });
   const [errors, setErrors] = useState({});
@@ -14,7 +15,7 @@ export default function CheckoutPage({ items, cart, method, area, onPlaceOrder }
   const pricing = evaluateOrder({ subtotal, method, area });
 
   if (cartItems.length === 0) {
-    return <section className="empty"><h1>Nothing to check out</h1><p>Add items before continuing.</p><Link className="btn btn-primary" to="/">Browse the menu</Link></section>;
+    return <section className="empty"><CartNotice messages={messages} onDismiss={onDismissMessages} /><h1>Nothing to check out</h1><p>Add items before continuing.</p><Link className="btn btn-primary" to="/">Browse the menu</Link></section>;
   }
 
   function updateField(event) {
@@ -46,6 +47,7 @@ export default function CheckoutPage({ items, cart, method, area, onPlaceOrder }
   return (
     <section>
       <h1>Checkout</h1>
+      <CartNotice messages={messages} onDismiss={onDismissMessages} />
       <p className="notice">This is a simulated order. No real payment is taken.</p>
       <div className="checkout-layout">
         <form className="card form-stack" onSubmit={submit} noValidate>

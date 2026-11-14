@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { evaluateOrder } from "../src/rules/pricingRules.js";
+import { reconcileCart } from "../src/utils/cart.js";
 
 test("valid delivery order pays the area fee", () => {
   const r = evaluateOrder({ subtotal: 2000, method: "delivery", area: "satellite-town" });
@@ -39,4 +40,27 @@ test("unknown delivery area is rejected", () => {
   const r = evaluateOrder({ subtotal: 2000, method: "delivery", area: "mars" });
   assert.equal(r.ok, false);
   assert.equal(r.code, "UNKNOWN_AREA");
+});
+
+test("reconcileCart removes unavailable items and caps changed stock", () => {
+  const items = [
+    { id: "cake", name: "Cake", stock: 1 },
+    { id: "sold-out", name: "Sold Out", stock: 0 },
+  ];
+  const result = reconcileCart(
+    [
+      { id: "cake", quantity: 4 },
+      { id: "sold-out", quantity: 1 },
+      { id: "missing", quantity: 1 },
+      { id: "cake", quantity: 0 },
+    ],
+    items
+  );
+
+  assert.deepEqual(result.cart, [{ id: "cake", quantity: 1 }]);
+  assert.deepEqual(result.messages, [
+    "Cake was reduced from 4 to 1 because stock changed.",
+    "Sold Out is sold out and was removed.",
+    "missing is no longer on the menu.",
+  ]);
 });

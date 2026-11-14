@@ -8,6 +8,7 @@ import CheckoutPage from "./pages/CheckoutPage.jsx";
 import ConfirmationPage from "./pages/ConfirmationPage.jsx";
 import { checkQuantity } from "./rules/quantityRules.js";
 import { DELIVERY_FEES } from "./rules/pricingRules.js";
+import { reconcileCart } from "./utils/cart.js";
 
 const STORAGE_KEY = "flour-frost-cart";
 const DEFAULT_METHOD = "pickup";
@@ -41,6 +42,7 @@ export default function App() {
   const [method, setMethod] = useState(savedOrder.method);
   const [area, setArea] = useState(savedOrder.area);
   const [lastOrder, setLastOrder] = useState(null);
+  const [cartMessages, setCartMessages] = useState([]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart, method, area }));
@@ -77,7 +79,11 @@ export default function App() {
     loadItems({ fail: simulateFailure, changedStock })
       .then((data) => {
         if (!ignore) {
+          const savedOrder = readSavedOrder();
+          const reconciled = reconcileCart(savedOrder.cart, data);
           setItems(data);
+          setCart(reconciled.cart);
+          setCartMessages(reconciled.messages);
           setStatus("ready");
         }
       })
@@ -138,8 +144,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<MenuPage items={items} onAddToCart={addToCart} />} />
             <Route path="/items/:id" element={<ItemPage items={items} onAddToCart={addToCart} />} />
-            <Route path="/cart" element={<CartPage items={items} cart={cart} method={method} area={area} onMethodChange={setMethod} onAreaChange={setArea} onChangeQuantity={changeQuantity} onRemove={removeItem} />} />
-            <Route path="/checkout" element={<CheckoutPage items={items} cart={cart} method={method} area={area} onPlaceOrder={(order) => { setLastOrder(order); setCart([]); }} />} />
+            <Route path="/cart" element={<CartPage items={items} cart={cart} method={method} area={area} messages={cartMessages} onDismissMessages={() => setCartMessages([])} onMethodChange={setMethod} onAreaChange={setArea} onChangeQuantity={changeQuantity} onRemove={removeItem} />} />
+            <Route path="/checkout" element={<CheckoutPage items={items} cart={cart} method={method} area={area} messages={cartMessages} onDismissMessages={() => setCartMessages([])} onPlaceOrder={(order) => { setLastOrder(order); setCart([]); }} />} />
             <Route path="/confirmation" element={<ConfirmationPage order={lastOrder} />} />
             <Route
               path="*"
