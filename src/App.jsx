@@ -35,6 +35,7 @@ export default function App() {
   const [status, setStatus] = useState("loading");
   const [attempt, setAttempt] = useState(0);
   const [simulateFailure, setSimulateFailure] = useState(false);
+  const [changedStock, setChangedStock] = useState(false);
   const [savedOrder] = useState(readSavedOrder);
   const [cart, setCart] = useState(savedOrder.cart);
   const [method, setMethod] = useState(savedOrder.method);
@@ -73,7 +74,7 @@ export default function App() {
   // Load the data from the mock server. Re-runs on retry or when the demo switch changes.
   useEffect(() => {
     let ignore = false; // cleanup flag: ignore a response that arrives after we left
-    loadItems({ fail: simulateFailure })
+    loadItems({ fail: simulateFailure, changedStock })
       .then((data) => {
         if (!ignore) {
           setItems(data);
@@ -86,7 +87,7 @@ export default function App() {
     return () => {
       ignore = true;
     };
-  }, [attempt, simulateFailure]);
+  }, [attempt, simulateFailure, changedStock]);
 
   function retry() {
     setStatus("loading");
@@ -96,6 +97,11 @@ export default function App() {
   function toggleFailure(checked) {
     setStatus("loading");
     setSimulateFailure(checked);
+  }
+
+  function toggleStockChange(checked) {
+    setStatus("loading");
+    setChangedStock(checked);
   }
 
   return (
@@ -156,6 +162,10 @@ export default function App() {
         <label className="demo">
           <input type="checkbox" checked={simulateFailure} onChange={(e) => toggleFailure(e.target.checked)} />
           Demo control: simulate a loading failure
+        </label>
+        <label className="demo">
+          <input type="checkbox" checked={changedStock} onChange={(e) => toggleStockChange(e.target.checked)} />
+          Demo control: change stock
         </label>
       </footer>
     </>
