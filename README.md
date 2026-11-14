@@ -39,3 +39,29 @@ The cart is saved in browser local storage so a refresh keeps the selection.
 - `/cart` selection and fulfilment choices
 - `/checkout` validated order form and final price
 - `/confirmation` simulated order result
+
+## Reproducing edge cases
+
+The footer has two labelled demo controls:
+
+- **Demo control: simulate a loading failure**: tick it and the menu load
+  shows an error state with a working Try again button. Untick it and retry to
+  restore the menu.
+- **Demo control: change stock**: first untick it, add 4 Red Velvet Cakes and
+  1 Ice-Cream Cake, then tick it. The next menu load changes Red Velvet Cake
+  stock to 1 and makes Ice-Cream Cake sold out. The cart removes the
+  unavailable cake, reduces Red Velvet Cake to 1, and shows a dismissible
+  update notice on the cart and checkout pages. Refresh to confirm the
+  corrected cart remains saved. Untick the control to return to normal stock.
+
+The saved cart is also checked against current menu data on every successful
+load. Invalid saved lines are removed without crashing the app.
+
+## Concept map
+
+- `src/App.jsx` owns loading, cart state, stock demo state, and persistence.
+- `src/services/mockLoader.js` provides asynchronous menu data and demo
+  failures or stock changes.
+- `src/utils/cart.js` exports `reconcileCart` for changed availability.
+- `src/components/CartNotice.jsx` displays reconciliation messages.
+- `src/rules/quantityRules.js` enforces the shared quantity maximum.

@@ -12,7 +12,7 @@ the code locations and evidence once the features exist.
 | Alternative | React Context with `useReducer`. |
 | Reason | One source of truth keeps quantities consistent across all screens, and a customer can add, edit and review several items before ordering. |
 | Tradeoff | Props are passed through several components, which is more verbose than Context. |
-| Code location | `src/App.jsx` (`addToCart`, `changeQuantity`, `removeItem`); `src/pages/CartPage.jsx` |
+| Code location | `src/App.jsx` (`addToCart`, `changeQuantity`, `removeItem`); `src/pages/CartPage.jsx`; `src/utils/cart.js` (`reconcileCart`) |
 | Evidence | TODO: screenshot of a cart with 3+ items, steps: add items from list and details, change quantity, refresh page. |
 
 ## Decision 2: Full cost breakdown before confirming (information hierarchy / mobile layout)
