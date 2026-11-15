@@ -17,7 +17,7 @@ export default function ItemPage({ items, onAddToCart }) {
   const item = items.find((i) => i.id === id);
   const [imageFailed, setImageFailed] = useState(false);
 
-  // "default" means this page was the first one opened, so there is no menu to go back to.
+  // Keep menu history when possible.
   const canGoBack = location.key !== "default";
 
   if (!item) {

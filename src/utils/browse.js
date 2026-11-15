@@ -2,7 +2,6 @@ export function getCategories(items) {
   return ["All", ...new Set(items.map((item) => item.category))];
 }
 
-// Search, category filter and sort all work together.
 export function filterAndSort(items, { query, category, sortBy }) {
   const q = query.trim().toLowerCase();
 
@@ -13,7 +12,6 @@ export function filterAndSort(items, { query, category, sortBy }) {
     return matchesQuery && matchesCategory;
   });
 
-  // Copy before sorting so the original array is not mutated.
   const sorted = [...filtered];
   if (sortBy === "price-asc") sorted.sort((a, b) => a.price - b.price);
   if (sortBy === "price-desc") sorted.sort((a, b) => b.price - a.price);

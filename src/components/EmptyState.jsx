@@ -1,5 +1,4 @@
 export default function EmptyState({ datasetEmpty, query, category, categories, onClear, onPickCategory }) {
-  // Case 1: there is no data at all.
   if (datasetEmpty) {
     return (
       <div className="empty" role="status">
@@ -9,7 +8,6 @@ export default function EmptyState({ datasetEmpty, query, category, categories, 
     );
   }
 
-  // Case 2: items exist, but the search or filter matches none of them.
   const activeFilters = [query && `search "${query}"`, category !== "All" && `category "${category}"`]
     .filter(Boolean)
     .join(" and ");

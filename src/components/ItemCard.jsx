@@ -11,7 +11,6 @@ export default function ItemCard({ item, onAddToCart }) {
       {item.image && !imageFailed ? (
         <img src={item.image} alt={item.name} loading="lazy" onError={() => setImageFailed(true)} />
       ) : (
-        // Fallback when an image is missing.
         <div className="placeholder" role="img" aria-label={`No photo for ${item.name}`}>
           {item.name.charAt(0)}
         </div>

@@ -4,7 +4,6 @@ import EmptyState from "../components/EmptyState.jsx";
 import { filterAndSort, getCategories } from "../utils/browse.js";
 
 export default function MenuPage({ items, onAddToCart }) {
-  // Search, filter and sort live in the URL, so Back from an item page keeps them.
   const [params, setParams] = useSearchParams();
   const query = params.get("q") ?? "";
   const category = params.get("category") ?? "All";

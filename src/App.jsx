@@ -73,9 +73,8 @@ export default function App() {
     setCart((previous) => previous.filter((entry) => entry.id !== id));
   }
 
-  // Load the data from the mock server. Re-runs on retry or when the demo switch changes.
   useEffect(() => {
-    let ignore = false; // cleanup flag: ignore a response that arrives after we left
+    let ignore = false;
     loadItems({ fail: simulateFailure, changedStock })
       .then((data) => {
         if (!ignore) {
@@ -97,7 +96,7 @@ export default function App() {
 
   function retry() {
     setStatus("loading");
-    setAttempt((n) => n + 1); // functional update: next value depends on the previous one
+    setAttempt((n) => n + 1);
   }
 
   function toggleFailure(checked) {

@@ -1,8 +1,3 @@
-// Local data for Flour & Frost. Each record has a stable string id.
-// stock: units available today (0 = sold out, used to demo unavailable states).
-// deliveryAreas: null means deliverable everywhere; an array limits delivery (Rule 2).
-// image: leave "" to test the missing-image fallback.
-
 export const items = [
   { id: "choc-truffle-cake", name: "Chocolate Truffle Cake", category: "Cakes", price: 2400, stock: 5, tags: ["chocolate"], deliveryAreas: null, image: "/images/choc-truffle-cake.jpg", description: "1 kg cake, dark chocolate ganache, serves 8." },
   { id: "red-velvet-cake", name: "Red Velvet Cake", category: "Cakes", price: 2600, stock: 4, tags: ["cream-cheese"], deliveryAreas: null, image: "/images/red-velvet-cake.jpg", description: "1 kg cake with cream cheese frosting, serves 8." },
