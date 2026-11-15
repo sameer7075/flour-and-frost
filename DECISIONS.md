@@ -13,7 +13,7 @@ the code locations and evidence once the features exist.
 | Reason | One source of truth keeps quantities consistent across all screens, and a customer can add, edit and review several items before ordering. |
 | Tradeoff | Props are passed through several components, which is more verbose than Context. |
 | Code location | `src/App.jsx` (`addToCart`, `changeQuantity`, `removeItem`); `src/pages/CartPage.jsx`; `src/utils/cart.js` (`reconcileCart`) |
-| Evidence | TODO: screenshot of a cart with 3+ items, steps: add items from list and details, change quantity, refresh page. |
+| Evidence | Steps: add 3 items from the menu and item pages, change quantities, check the header count. ![Cart with three items](docs/screenshots/04-cart-desktop.png) ![Card and header show the same quantity](docs/screenshots/09-consistent-quantity.png) |
 
 ## Decision 2: Full cost breakdown before confirming (information hierarchy / mobile layout)
 
@@ -25,7 +25,7 @@ the code locations and evidence once the features exist.
 | Reason | Customers see the final amount before they commit, which reduces surprise and cancellations. |
 | Tradeoff | The customer must choose pickup or delivery and an area earlier in the flow. |
 | Code location | `src/rules/pricingRules.js` (`evaluateOrder`); `src/components/OrderSummary.jsx` |
-| Evidence | TODO: screenshots at 390 px and 1280 px, steps: add items, switch area, observe the fee and total change. |
+| Evidence | Steps: add items, switch between pickup and delivery and change the area, watch the fee and total update. ![Summary at 1280 px](docs/screenshots/06-checkout-desktop.png) ![Summary at 390 px](docs/screenshots/07-checkout-mobile.png) |
 
 ## Decision 3: Helpful empty state for no-match searches (interaction / state)
 
@@ -37,4 +37,4 @@ the code locations and evidence once the features exist.
 | Reason | The customer keeps control and always has a clear next action. |
 | Tradeoff | Needs extra logic to work out which categories still have stock. |
 | Code location | `src/components/EmptyState.jsx`; `src/pages/MenuPage.jsx` |
-| Evidence | TODO: screenshot of a search with no results, steps: search for "xyz", then click "Clear filters". |
+| Evidence | Steps: search for "xyz", then click a category or Clear search and filters. ![Empty state with next steps](docs/screenshots/10-empty-search.png) |
