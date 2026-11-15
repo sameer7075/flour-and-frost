@@ -65,3 +65,20 @@ load. Invalid saved lines are removed without crashing the app.
 - `src/utils/cart.js` exports `reconcileCart` for changed availability.
 - `src/components/CartNotice.jsx` displays reconciliation messages.
 - `src/rules/quantityRules.js` enforces the shared quantity maximum.
+
+## Photo credits
+
+| Item | Photographer | Source link |
+|---|---|---|
+| Chocolate Truffle Cake | TODO | TODO |
+| Red Velvet Cake | TODO | TODO |
+| Vanilla Berry Cake | TODO | TODO |
+| Ice-Cream Cake | TODO | TODO |
+| Cupcake Box (6) | TODO | TODO |
+| Brownie Box (9) | TODO | TODO |
+| Dessert Box | TODO | TODO |
+| Choc-Chip Cookies (6) | TODO | TODO |
+| Oat & Raisin Cookies (6) | TODO | TODO |
+| Banana Bread Loaf | TODO | TODO |
+| Iced Coffee | TODO | TODO |
+| Hot Chocolate | TODO | TODO |

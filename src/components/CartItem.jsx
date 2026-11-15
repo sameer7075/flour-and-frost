@@ -1,10 +1,19 @@
 import { checkQuantity } from "../rules/quantityRules.js";
 import { formatPrice, stockLabel } from "../utils/browse.js";
+import { useState } from "react";
 
 export default function CartItem({ item, quantity, incompatible, onChange, onRemove }) {
   const rule = checkQuantity(quantity, item.stock);
+  const [imageFailed, setImageFailed] = useState(false);
   return (
     <li className="card cart-item">
+      {item.image && !imageFailed ? (
+        <img className="cart-thumbnail" src={item.image} alt={item.name} onError={() => setImageFailed(true)} />
+      ) : (
+        <div className="placeholder cart-thumbnail" role="img" aria-label={`No photo for ${item.name}`}>
+          {item.name.charAt(0)}
+        </div>
+      )}
       <div>
         <h3>{item.name}</h3>
         <p className="muted">{formatPrice(item.price)} each · {stockLabel(item.stock)}</p>

@@ -1,13 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { formatPrice, stockLabel } from "../utils/browse.js";
 
 export default function ItemCard({ item, onAddToCart }) {
   const soldOut = item.stock === 0;
+  const [imageFailed, setImageFailed] = useState(false);
 
   return (
     <li className="card">
-      {item.image ? (
-        <img src={item.image} alt={item.name} />
+      {item.image && !imageFailed ? (
+        <img src={item.image} alt={item.name} loading="lazy" onError={() => setImageFailed(true)} />
       ) : (
         // Fallback when an image is missing.
         <div className="placeholder" role="img" aria-label={`No photo for ${item.name}`}>

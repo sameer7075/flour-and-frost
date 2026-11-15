@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { formatPrice, stockLabel } from "../utils/browse.js";
 import { checkQuantity } from "../rules/quantityRules.js";
@@ -14,6 +15,7 @@ export default function ItemPage({ items, onAddToCart }) {
   const navigate = useNavigate();
   const location = useLocation();
   const item = items.find((i) => i.id === id);
+  const [imageFailed, setImageFailed] = useState(false);
 
   // "default" means this page was the first one opened, so there is no menu to go back to.
   const canGoBack = location.key !== "default";
@@ -47,6 +49,13 @@ export default function ItemPage({ items, onAddToCart }) {
       <h1>{item.name}</h1>
       <p className="muted">{item.category}</p>
       <p className="price">{formatPrice(item.price)}</p>
+      {item.image && !imageFailed ? (
+        <img src={item.image} alt={item.name} onError={() => setImageFailed(true)} />
+      ) : (
+        <div className="placeholder" role="img" aria-label={`No photo for ${item.name}`}>
+          {item.name.charAt(0)}
+        </div>
+      )}
       <p>{item.description}</p>
       <p className={soldOut ? "status status-bad" : "status status-ok"}>{stockLabel(item.stock)}</p>
       <p className="muted">Maximum {Math.min(6, item.stock)} per order.</p>
