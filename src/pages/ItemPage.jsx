@@ -50,7 +50,7 @@ export default function ItemPage({ items, onAddToCart }) {
       <p className="muted">{item.category}</p>
       <p className="price">{formatPrice(item.price)}</p>
       {item.image && !imageFailed ? (
-        <img src={item.image} alt={item.name} onError={() => setImageFailed(true)} />
+        <img className="item-image" src={item.image} alt={item.name} onError={() => setImageFailed(true)} />
       ) : (
         <div className="placeholder" role="img" aria-label={`No photo for ${item.name}`}>
           {item.name.charAt(0)}

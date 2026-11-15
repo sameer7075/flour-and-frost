@@ -32,6 +32,10 @@ export default function MenuPage({ items, onAddToCart }) {
   return (
     <section>
       <h1>Our menu</h1>
+      <div className="intro-band">
+        <p className="tagline">Small batches, big celebrations.</p>
+        <p>Pick up from our Satellite Town shop or choose delivery across selected Rawalpindi and Islamabad areas.</p>
+      </div>
       <p className="notice">Delivery is Rs. 200 in Satellite Town/Saddar or Rs. 350 in Bahria Town/DHA. Delivery needs a Rs. 1,500 subtotal and is free from Rs. 4,000. Pickup has no minimum.</p>
 
       <div className="controls">
