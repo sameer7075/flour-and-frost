@@ -82,3 +82,5 @@ load. Invalid saved lines are removed without crashing the app.
 | Banana Bread Loaf | TODO | TODO |
 | Iced Coffee | TODO | TODO |
 | Hot Chocolate | TODO | TODO |
+
+Deployment note: vercel.json sends every path to index.html so refreshing /cart, /checkout or /items/:id works on Vercel.
